@@ -1,28 +1,36 @@
-#include <iostream>
-#include <vector>
-#include <algorithm>
-
+#include<iostream>
+#include<stack>
 using namespace std;
 
 int main() {
-    int a;
-    cin >> a;
+    string str;
 
-    vector<pair<int, string>> arr;
+    while (true) {
+        bool view = true;
+        stack<char> st;
 
-    for (int i = 0; i < a; i++) {
-        int temp1;
-        string temp2;
-        cin >> temp1 >> temp2;
-        arr.push_back({temp1, temp2});
-    }
+        getline(cin, str);
+        if(str == ".") break;
 
-    stable_sort(arr.begin(), arr.end(), [](const pair<int, string>& p1, const pair<int, string>& p2) {
-        return p1.first < p2.first;
-    });
+        for(char tem : str) {
+            if(tem == '(' || tem == '[') {
+                st.push(tem);
+            } else if (tem == ')') {
+                if(st.empty() || st.top() != '(') {
+                    view = false;
+                    break;
+                }
+                st.pop();
+            } else if(tem == ']') {
+                if(st.empty() || st.top() != '[') {
+                    view = false;
+                    break;
+                }
+                st.pop();
+            }
+        }
 
-    for (int i = 0; i < a; i++) {
-        cout << arr[i].first << ' ' << arr[i].second << endl;
+        view && st.empty() ? cout << "yes" << endl : cout << "no" << endl;
     }
 
     return 0;
